@@ -1,4 +1,4 @@
-import { UsersRepositroy } from "../../repositories/users.repository";
+import { UsersRepository } from "../../repositories/users.repository";
 import { UserNotFound } from "../errors/user-not-found.error";
 
 interface DeleteUserUseCaseRequestParams {
@@ -6,7 +6,7 @@ interface DeleteUserUseCaseRequestParams {
 }
 
 export class DeleteUserUseCase {
-    constructor(private usersRepository: UsersRepositroy) { }
+    constructor(private usersRepository: UsersRepository) { }
 
     async execute({ id }: DeleteUserUseCaseRequestParams): Promise<void> {
         const user = await this.usersRepository.findById(id);

@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { UsersRepositroy } from "../../repositories/users.repository";
+import { UsersRepository } from "../../repositories/users.repository";
 import { hash } from "bcrypt";
 import { UserNotFound } from "../errors/user-not-found.error";
 
@@ -18,7 +18,7 @@ interface UpdateUserUseCaseResponse {
 }
 
 export class UpdateUserUseCase {
-    constructor(private usersRepository: UsersRepositroy) { }
+    constructor(private usersRepository: UsersRepository) { }
 
     async execute(
         { id }: UpdateUserUseCaseRequestParams,

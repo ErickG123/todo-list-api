@@ -1,9 +1,9 @@
 import { Prisma, User } from "@prisma/client";
-import { UsersRepositroy } from "../users.repository";
+import { UsersRepository } from "../users.repository";
 import { prisma } from "../../lib/prisma";
 import { UserNotFound } from "../../use-cases/errors/user-not-found.error";
 
-export class PrismaUsersRepository implements UsersRepositroy {
+export class PrismaUsersRepository implements UsersRepository {
     async findById(id: string): Promise<User | null> {
         const user = await prisma.user.findUnique({
             where: {
