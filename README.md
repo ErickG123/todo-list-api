@@ -1,2 +1,18 @@
-# todo-list-api
-Projeto de Backend do site Roadmap.sh - Todo List API
+# Todo List API
+Roadmap.sh Website Backend Project - Todo List API
+
+## Running the Project
+```bash
+# Install dependencies  
+npm install  
+
+# Create the database and apply migrations  
+npx prisma migrate dev  
+
+# Start the project  
+npm run dev
+```
+
+## .env
+Create a .env file with the necessary configurations.
+
