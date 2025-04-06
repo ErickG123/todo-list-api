@@ -38,7 +38,7 @@ app.register(fastifyJwt, {
         expiresIn: "7d"
     },
     cookie: {
-        cookieName: "token",
+        cookieName: "refreshToken",
         signed: true
     }
 });

@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { makeCreateUserUseCase } from "../../../use-cases/factories/users/make-create-user-use-case";
 import { UserAlreadyExistsError } from "../../../use-cases/errors/user-already-exists.error";
+import { generateAndSetTokens } from "../../utils/generate-and-set-token";
 
 const bodySchema = z.object({
     name: z.string(),
@@ -17,19 +18,16 @@ export async function createUserController(request: FastifyRequest, reply: Fasti
     try {
         const { user } = await createUserUseCase.execute(body);
 
-        const token = await reply.jwtSign(
-            {
+        const accessToken = await generateAndSetTokens({
+            reply,
+            user: {
+                id: user.id,
                 name: user.name,
                 email: user.email
-            },
-            {
-                sign: {
-                    sub: user.id
-                }
             }
-        );
+        });
 
-        return reply.status(201).send({ token });
+        return reply.status(201).send({ token: accessToken });
     } catch (error) {
         if (error instanceof UserAlreadyExistsError) {
             return reply.status(400).send({ message: error.message });

@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { makeAuthenticateUserUseCase } from "../../../use-cases/factories/users/make-authenticate-user-use-case";
 import { InvalidCredentialsError } from "../../../use-cases/errors/invalid-credentials-error";
+import { generateAndSetTokens } from "../../utils/generate-and-set-token";
 
 const bodySchema = z.object({
     email: z.string(),
@@ -16,19 +17,16 @@ export async function authenticateUserController(request: FastifyRequest, reply:
     try {
         const { user } = await authenticateUserUseCase.execute(body);
 
-        const token = await reply.jwtSign(
-            {
+        const accessToken = await generateAndSetTokens({
+            reply,
+            user: {
+                id: user.id,
                 name: user.name,
                 email: user.email
-            },
-            {
-                sign: {
-                    sub: user.id
-                }
             }
-        );
+        });
 
-        return reply.status(200).send({ token });
+        return reply.status(201).send({ token: accessToken });
     } catch (error) {
         if (error instanceof InvalidCredentialsError) {
             return reply.status(400).send({ message: error.message });
